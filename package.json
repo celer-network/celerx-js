@@ -1,0 +1,19 @@
+{
+  "name": "celerxjs",
+  "version": "1.0.3",
+  "description": "The Javascript library of CelerX eSport Gaming SDK, you need webpack in order for this to work.",
+  "main": "celerx.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celer-network/celerx-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/celer-network/celerx-js/issues"
+  },
+  "homepage": "https://github.com/celer-network/celerx-js#readme"
+}
