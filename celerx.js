@@ -1,1 +1,357 @@
-"use strict";function binary_to_base64(a){var b=new Uint8Array(a);a=[];for(var c=0,d=Array(3),e=Array(4),g=b.length,f=0;g--;)if(d[c++]=b[f++],3==c){e[0]=(252&d[0])>>2;e[1]=((3&d[0])<<4)+((240&d[1])>>4);e[2]=((15&d[1])<<2)+((192&d[2])>>6);e[3]=63&d[2];for(c=0;4>c;c++)a+=base64_chars.charAt(e[c]);c=0}if(c){for(b=c;3>b;b++)d[b]=0;e[0]=(252&d[0])>>2;e[1]=((3&d[0])<<4)+((240&d[1])>>4);e[2]=((15&d[1])<<2)+((192&d[2])>>6);e[3]=63&d[2];for(b=0;b<c+1;b++)a+=base64_chars.charAt(e[b]);for(;3>c++;)a+="\x3d"}return a}function dec2hex(a){for(var b=hD.substr(15&a,1);15<a;)a>>=4,b=hD.substr(15&a,1)+b;return b}function base64_decode(a){var b,c,d,e,g,f=[],h=0;e=a;if(a=a.replace(/[^A-Za-z0-9\+\/\=]/g,""),e!=a&&alert("Warning! Characters outside Base64 range in input string ignored."),a.length%4)return alert("Error: Input length is not a multiple of 4 bytes."),"";for(var k=0;h<a.length;)b=keyStr.indexOf(a.charAt(h++)),c=keyStr.indexOf(a.charAt(h++)),e=keyStr.indexOf(a.charAt(h++)),g=keyStr.indexOf(a.charAt(h++)),b=b<<2|c>>4,c=(15&c)<<4|e>>2,d=(3&e)<<6|g,f[k++]=b,64!=e&&(f[k++]=c),64!=g&&(f[k++]=d);return f}var _typeof="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(a){return typeof a}:function(a){return a&&"function"==typeof Symbol&&a.constructor===Symbol&&a!==Symbol.prototype?"symbol":typeof a},bridge={"default":void 0,call:function(a,b,c){var d="";if("function"==typeof b&&(c=b,b={}),b={data:void 0===b?null:b},"function"==typeof c){var e="dscb"+window.dscb++;window[e]=c;b._dscbstub=e}return b=JSON.stringify(b),window._dsbridge?d=_dsbridge.call(a,b):(window._dswk||-1!=navigator.userAgent.indexOf("_dsbridge"))&&(d=prompt("_dsbridge\x3d"+a,b)),JSON.parse(d||"{}").data},register:function(a,b,c){c=c?window._dsaf:window._dsf;window._dsInit||(window._dsInit=!0,setTimeout(function(){bridge.call("_dsb.dsinit")},0));"object"==(void 0===b?"undefined":_typeof(b))?c._obs[a]=b:c[a]=b},registerAsyn:function(a,b){this.register(a,b,!0)},hasNativeMethod:function(a,b){return this.call("_dsb.hasNativeMethod",{name:a,type:b||"all"})},disableJavascriptDialogBlock:function(a){this.call("_dsb.disableJavascriptDialogBlock",{disable:!1!==a})}};!function(){if(!window._dsf){var a,b={_dsf:{_obs:{}},_dsaf:{_obs:{}},dscb:0,celerx:bridge,close:function(){bridge.call("_dsb.closePage")},_handleMessageFromNative:function(a){var b=JSON.parse(a.data),c={id:a.callbackId,complete:!0},g=this._dsf[a.method],f=this._dsaf[a.method],h=function(a,d){c.data=a.apply(d,b);bridge.call("_dsb.returnValue",c)},k=function(a,d){b.push(function(a,b){c.data=a;c.complete=!1!==b;bridge.call("_dsb.returnValue",c)});a.apply(d,b)};if(g)h(g,this._dsf);else if(f)k(f,this._dsaf);else if(g=a.method.split("."),!(2>g.length)){a=g.pop();var g=g.join("."),f=this._dsf._obs,f=f[g]||{},l=f[a];l&&"function"==typeof l?h(l,f):(f=this._dsaf._obs,f=f[g]||{},(l=f[a])&&"function"==typeof l&&k(l,f))}}};for(a in b)window[a]=b[a];bridge.register("_hasJavascriptMethod",function(a,b){return b=a.split("."),2>b.length?!(!_dsf[b]&&!_dsaf[b]):(a=b.pop(),b=b.join("."),(b=_dsf._obs[b]||_dsaf._obs[b])&&!!b[a])})}}();var base64_chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",hD="0123456789ABCDEF",keyStr="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\x3d",_provideScore={callback:function(){return""}},_provideCurrentFrameData={callback:function(){return""}};bridge.register("provideScore",function(){return _provideScore.callback()});bridge.register("provideCurrentFrameData",function(){return _provideCurrentFrameData.callback()});module.exports=window.celerSDK={onStateReceived:function(a){return bridge.register("onStateReceived",function(b){b=base64_decode(b);return a(new Uint8Array(b))})},onCourtModeStarted:function(a){return bridge.register("onCourtModeStarted",a)},getMatch:function(){var a=bridge.call("getMatch","123");try{a=JSON.parse(a)}catch(b){}return a},showCourtModeDialog:function(){return bridge.call("showCourtModeDialog")},start:function(){return bridge.call("start")},sendState:function(a){return bridge.call("sendState",binary_to_base64(a))},draw:function(a){return bridge.call("draw",binary_to_base64(a))},win:function(a){return bridge.call("win",binary_to_base64(a))},lose:function(a){return bridge.call("lose",binary_to_base64(a))},surrender:function(a){return bridge.call("surrender",binary_to_base64(a))},applyAction:function(a,b){return bridge.call("applyAction",binary_to_base64(a),b)},getOnChainState:function(a){return bridge.call("getOnChainState","123",function(b){b=base64_decode(b);return a(new Uint8Array(b))})},getOnChainActionDeadline:function(a){return bridge.call("getOnChainActionDeadline","123",a)},getCurrentBlockNumber:function(){return bridge.call("getCurrentBlockNumber","123")},finalizeOnChainGame:function(a){return bridge.call("finalizeOnChainGame","123",a)},submitScore:function(a){return bridge.call("submitScore",a)},ready:function(){return bridge.call("ready")},onStart:function(a){return bridge.register("onStart",a)},provideScore:function(a){return _provideScore={callback:a}},provideCurrentFrameData:function(a){return _provideCurrentFrameData={callback:a}},didTakeSnapshot:function(a){window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.celerSDK&&window.webkit.messageHandlers.celerSDK.postMessage({method:"didTakeSnapshot",args:a})},log:function(a){window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers.celerSDK&&window.webkit.messageHandlers.celerSDK.postMessage({method:"log",args:a})},getGameScore:function(){return _provideScore&&_provideScore.callback&&""!=_provideScore.callback()?_provideScore.callback():0},switchSnapShotFlag:function(){return _provideCurrentFrameData&&_provideCurrentFrameData.callback&&""!=_provideCurrentFrameData.callback()?_provideCurrentFrameData.callback():0}};
+"use strict";
+
+function binary_to_base64(e) {
+    for (
+        var r = new Uint8Array(e),
+            t = new Array(),
+            n = 0,
+            i = 0,
+            a = new Array(3),
+            o = new Array(4),
+            d = r.length,
+            c = 0; d--;
+
+    )
+        if (((a[n++] = r[c++]), 3 == n)) {
+            for (
+                o[0] = (252 & a[0]) >> 2,
+                o[1] = ((3 & a[0]) << 4) + ((240 & a[1]) >> 4),
+                o[2] = ((15 & a[1]) << 2) + ((192 & a[2]) >> 6),
+                o[3] = 63 & a[2],
+                n = 0; n < 4; n++
+            )
+                t += base64_chars.charAt(o[n]);
+            n = 0;
+        }
+    if (n) {
+        for (i = n; i < 3; i++) a[i] = 0;
+        for (
+            o[0] = (252 & a[0]) >> 2,
+            o[1] = ((3 & a[0]) << 4) + ((240 & a[1]) >> 4),
+            o[2] = ((15 & a[1]) << 2) + ((192 & a[2]) >> 6),
+            o[3] = 63 & a[2],
+            i = 0; i < n + 1; i++
+        )
+            t += base64_chars.charAt(o[i]);
+        for (; n++ < 3;) t += "=";
+    }
+    return t;
+}
+
+function dec2hex(e) {
+    for (var r = hD.substr(15 & e, 1); e > 15;)
+        (e >>= 4), (r = hD.substr(15 & e, 1) + r);
+    return r;
+}
+
+function base64_decode(e) {
+    var r,
+        t,
+        n,
+        i,
+        a,
+        o,
+        d,
+        c = new Array(),
+        s = 0,
+        u = e;
+    if (
+        ((e = e.replace(/[^A-Za-z0-9\+\/\=]/g, "")),
+            u != e &&
+            alert(
+                "Warning! Characters outside Base64 range in input string ignored."
+            ),
+            e.length % 4)
+    )
+        return alert("Error: Input length is not a multiple of 4 bytes."), "";
+    for (var l = 0; s < e.length;)
+        (i = keyStr.indexOf(e.charAt(s++))),
+        (a = keyStr.indexOf(e.charAt(s++))),
+        (o = keyStr.indexOf(e.charAt(s++))),
+        (d = keyStr.indexOf(e.charAt(s++))),
+        (r = (i << 2) | (a >> 4)),
+        (t = ((15 & a) << 4) | (o >> 2)),
+        (n = ((3 & o) << 6) | d),
+        (c[l++] = r),
+        64 != o && (c[l++] = t),
+        64 != d && (c[l++] = n);
+    return c;
+}
+var _typeof =
+    "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ?
+    function (e) {
+        return typeof e;
+    } :
+    function (e) {
+        return e &&
+            "function" == typeof Symbol &&
+            e.constructor === Symbol &&
+            e !== Symbol.prototype ?
+            "symbol" :
+            typeof e;
+    },
+    bridge = {
+        default: void 0,
+        call: function (e, r, t) {
+            var n = "";
+            if (
+                ("function" == typeof r && ((t = r), (r = {})),
+                    (r = {
+                        data: void 0 === r ? null : r
+                    }),
+                    "function" == typeof t)
+            ) {
+                var i = "dscb" + window.dscb++;
+                (window[i] = t), (r._dscbstub = i);
+            }
+            return (
+                (r = JSON.stringify(r)),
+                window._dsbridge ?
+                (n = _dsbridge.call(e, r)) :
+                (window._dswk || -1 != navigator.userAgent.indexOf("_dsbridge")) &&
+                (n = prompt("_dsbridge=" + e, r)),
+                JSON.parse(n || "{}").data
+            );
+        },
+        register: function (e, r, t) {
+            (t = t ? window._dsaf : window._dsf),
+            window._dsInit ||
+                ((window._dsInit = !0),
+                    setTimeout(function () {
+                        bridge.call("_dsb.dsinit");
+                    }, 0)),
+                "object" == (void 0 === r ? "undefined" : _typeof(r)) ?
+                (t._obs[e] = r) :
+                (t[e] = r);
+        },
+        registerAsyn: function (e, r) {
+            this.register(e, r, !0);
+        },
+        hasNativeMethod: function (e, r) {
+            return this.call("_dsb.hasNativeMethod", {
+                name: e,
+                type: r || "all"
+            });
+        },
+        disableJavascriptDialogBlock: function (e) {
+            this.call("_dsb.disableJavascriptDialogBlock", {
+                disable: !1 !== e
+            });
+        },
+    };
+!(function () {
+    if (!window._dsf) {
+        var e,
+            r = {
+                _dsf: {
+                    _obs: {}
+                },
+                _dsaf: {
+                    _obs: {}
+                },
+                dscb: 0,
+                celerx: bridge,
+                close: function () {
+                    bridge.call("_dsb.closePage");
+                },
+                _handleMessageFromNative: function (e) {
+                    var r = JSON.parse(e.data),
+                        t = {
+                            id: e.callbackId,
+                            complete: !0
+                        },
+                        n = this._dsf[e.method],
+                        i = this._dsaf[e.method],
+                        a = function (e, n) {
+                            (t.data = e.apply(n, r)), bridge.call("_dsb.returnValue", t);
+                        },
+                        o = function (e, n) {
+                            r.push(function (e, r) {
+                                    (t.data = e),
+                                    (t.complete = !1 !== r),
+                                    bridge.call("_dsb.returnValue", t);
+                                }),
+                                e.apply(n, r);
+                        };
+                    if (n) a(n, this._dsf);
+                    else if (i) o(i, this._dsaf);
+                    else if (((n = e.method.split(".")), !(2 > n.length))) {
+                        e = n.pop();
+                        var n = n.join("."),
+                            i = this._dsf._obs,
+                            i = i[n] || {},
+                            d = i[e];
+                        d && "function" == typeof d ?
+                            a(d, i) :
+                            ((i = this._dsaf._obs),
+                                (i = i[n] || {}),
+                                (d = i[e]) && "function" == typeof d && o(d, i));
+                    }
+                },
+            };
+        for (e in r) window[e] = r[e];
+        bridge.register("_hasJavascriptMethod", function (e, r) {
+            return (
+                (r = e.split(".")),
+                2 > r.length ?
+                !(!_dsf[r] && !_dsaf[r]) :
+                ((e = r.pop()),
+                    (r = r.join(".")),
+                    (r = _dsf._obs[r] || _dsaf._obs[r]) && !!r[e])
+            );
+        });
+    }
+})();
+var base64_chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+    hD = "0123456789ABCDEF",
+    keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+    _provideScore = {
+        callback: function () {
+            return "";
+        },
+    },
+    _provideCurrentFrameData = {
+        callback: function () {
+            return "";
+        },
+    };
+bridge.register("provideScore", function () {
+        return _provideScore.callback();
+    }),
+    bridge.register("provideCurrentFrameData", function () {
+        return _provideCurrentFrameData.callback();
+    }),
+    (module.exports = window["celerSDK"] = {
+        onStateReceived: function (e) {
+            return bridge.register("onStateReceived", function (r) {
+                var t = base64_decode(r);
+                return e(new Uint8Array(t));
+            });
+        },
+        onCourtModeStarted: function (e) {
+            return bridge.register("onCourtModeStarted", e);
+        },
+        getMatch: function () {
+            var e = bridge.call("getMatch", "123");
+            try {
+                e = JSON.parse(e);
+            } catch (e) {}
+            return e;
+        },
+        showCourtModeDialog: function () {
+            return bridge.call("showCourtModeDialog");
+        },
+        start: function () {
+            return bridge.call("start");
+        },
+        sendState: function (e) {
+            return bridge.call("sendState", binary_to_base64(e));
+        },
+        draw: function (e) {
+            return bridge.call("draw", binary_to_base64(e));
+        },
+        win: function (e) {
+            return bridge.call("win", binary_to_base64(e));
+        },
+        lose: function (e) {
+            return bridge.call("lose", binary_to_base64(e));
+        },
+        surrender: function (e) {
+            return bridge.call("surrender", binary_to_base64(e));
+        },
+        applyAction: function (e, r) {
+            return bridge.call("applyAction", binary_to_base64(e), r);
+        },
+        getOnChainState: function (e) {
+            return bridge.call("getOnChainState", "123", function (r) {
+                var t = base64_decode(r);
+                return e(new Uint8Array(t));
+            });
+        },
+        getOnChainActionDeadline: function (e) {
+            return bridge.call("getOnChainActionDeadline", "123", e);
+        },
+        getCurrentBlockNumber: function () {
+            return bridge.call("getCurrentBlockNumber", "123");
+        },
+        finalizeOnChainGame: function (e) {
+            return bridge.call("finalizeOnChainGame", "123", e);
+        },
+        submitScore: function (e) {
+            return bridge.call("submitScore", e);
+        },
+        ready: function () {
+            return bridge.call("ready");
+        },
+        onStart: function (e) {
+            return bridge.register("onStart", e);
+        },
+        provideScore: function (e) {
+            return (_provideScore = {
+                callback: e
+            });
+        },
+        provideCurrentFrameData: function (e) {
+            return (_provideCurrentFrameData = {
+                callback: e
+            });
+        },
+        /** 上报游戏截屏数据 */
+        didTakeSnapshot: function (e) {
+            if (
+                window["webkit"] &&
+                window["webkit"].messageHandlers &&
+                window["webkit"].messageHandlers["celerSDK"] &&
+                window["webkit"].messageHandlers["celerSDK"].postMessage
+            ) {
+                window["webkit"].messageHandlers["celerSDK"].postMessage({
+                    method: "didTakeSnapshot",
+                    args: e,
+                });
+            } else {
+                return bridge.call("didTakeSnapshot", e)
+            }
+        },
+
+        /** 上报log */
+        log: function (e) {
+            if (
+                window["webkit"] &&
+                window["webkit"].messageHandlers &&
+                window["webkit"].messageHandlers["celerSDK"] &&
+                window.webkit.messageHandlers["celerSDK"].postMessage
+            ) {
+                window.webkit.messageHandlers["celerSDK"].postMessage({
+                    method: "log",
+                    args: e,
+                });
+            } else {
+                return bridge.call("log", e)
+            }
+        },
+
+        /** 获取当前游戏分数 */
+        getGameScore: function () {
+            if (
+                !_provideScore ||
+                !_provideScore.callback ||
+                _provideScore.callback() == ""
+            ) {
+                return 0;
+            }
+            return _provideScore.callback();
+        },
+
+        /** 切换游戏截屏数据的flag */
+        switchSnapShotFlag: function () {
+            if (
+                !_provideCurrentFrameData ||
+                !_provideCurrentFrameData.callback ||
+                _provideCurrentFrameData.callback() == ""
+            ) {
+                return 0;
+            }
+            return _provideCurrentFrameData.callback();
+        },
+    });
