@@ -213,7 +213,7 @@ bridge.register("provideCurrentFrameData", function () {
   return provideCurrentFrameData.callback();
 });
 
-module.exports = {
+module.exports = window["celerSDK"] = {
   onStateReceived: function (callback) {
     return bridge.register("onStateReceived", function (base64) {
       var output = base64_decode(base64);
@@ -284,10 +284,54 @@ module.exports = {
   provideCurrentFrameData: function (callback) {
     return (provideCurrentFrameData = { callback: callback });
   },
-  didTakeSnapshot: function (image) {
-    return bridge.call("didTakeSnapshot", image);
+  didTakeSnapshot: function (e) {
+    if (
+      window["webkit"] &&
+      window["webkit"].messageHandlers &&
+      window["webkit"].messageHandlers["celerSDK"] &&
+      window["webkit"].messageHandlers["celerSDK"].postMessage
+    ) {
+      window["webkit"].messageHandlers["celerSDK"].postMessage({
+        method: "didTakeSnapshot",
+        args: e,
+      });
+    } else {
+      return bridge.call("didTakeSnapshot", e);
+    }
   },
-  log: function (msg) {
-    return bridge.call("log", msg);
+  log: function (e) {
+    if (
+      window["webkit"] &&
+      window["webkit"].messageHandlers &&
+      window["webkit"].messageHandlers["celerSDK"] &&
+      window.webkit.messageHandlers["celerSDK"].postMessage
+    ) {
+      window.webkit.messageHandlers["celerSDK"].postMessage({
+        method: "log",
+        args: e,
+      });
+    } else {
+      return bridge.call("log", e);
+    }
+  },
+  getGameScore: function () {
+    if (
+      !provideScore ||
+      !provideScore.callback ||
+      provideScore.callback() == ""
+    ) {
+      return 0;
+    }
+    return provideScore.callback();
+  },
+  switchSnapShotFlag: function () {
+    if (
+      !provideCurrentFrameData ||
+      !provideCurrentFrameData.callback ||
+      provideCurrentFrameData.callback() == ""
+    ) {
+      return 0;
+    }
+    return provideCurrentFrameData.callback();
   },
 };
