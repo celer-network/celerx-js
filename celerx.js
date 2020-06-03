@@ -273,6 +273,19 @@ module.exports = window["celerSDK"] = {
     return bridge.call("submitScore", score);
   },
   ready: function () {
+    if (window.cc) {
+      var takeImage = false;
+      var canvas = document.getElementsByTagName("canvas")[0];
+      cc.director.on(cc.Director.EVENT_AFTER_DRAW, function () {
+        if (takeImage) {
+          takeImage = false;
+          celerSDK.didTakeSnapshot(canvas.toDataURL("image/jpeg", 0.1));
+        }
+      });
+      celerSDK.provideCurrentFrameData(function () {
+        takeImage = true;
+      });
+    }
     return bridge.call("ready");
   },
   onStart: function (callback) {
