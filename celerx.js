@@ -347,4 +347,10 @@ module.exports = window["celerSDK"] = {
     }
     return provideCurrentFrameData.callback();
   },
+  onResume: function (callback) {
+    return bridge.register("onResume", callback);
+  },
+  onPause: function (callback) {
+    return bridge.register("onPause", callback);
+  },
 };
