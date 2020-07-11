@@ -205,12 +205,32 @@ var provideCurrentFrameData = {
   },
 };
 
+var onResume = {
+  callback: function () {
+    return "";
+  },
+};
+
+var onPause = {
+  callback: function () {
+    return "";
+  },
+};
+
 bridge.register("provideScore", function () {
   return provideScore.callback();
 });
 
 bridge.register("provideCurrentFrameData", function () {
   return provideCurrentFrameData.callback();
+});
+
+bridge.register("onPause", function () {
+  return onResume.callback();
+});
+
+bridge.register("onResume", function () {
+  return onPause.callback();
 });
 
 module.exports = window["celerSDK"] = {
@@ -348,9 +368,21 @@ module.exports = window["celerSDK"] = {
     return provideCurrentFrameData.callback();
   },
   onResume: function (callback) {
-    return bridge.register("onResume", callback);
+    return (onResume = { callback: callback });
   },
   onPause: function (callback) {
-    return bridge.register("onPause", callback);
+    return (onPause = { callback: callback });
+  },
+  triggerOnResumeInGame: function () {
+    if (!onResume || !onResume.callback || onResume.callback() == "") {
+      return 0;
+    }
+    return onResume.callback();
+  },
+  triggerOnPauseInGame: function () {
+    if (!onPause || !onPause.callback || onPause.callback() == "") {
+      return 0;
+    }
+    return onPause.callback();
   },
 };
