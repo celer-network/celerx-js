@@ -348,21 +348,13 @@ module.exports = window["celerSDK"] = {
     }
   },
   getGameScore: function () {
-    if (
-      !provideScore ||
-      !provideScore.callback ||
-      provideScore.callback() == ""
-    ) {
+    if (!provideScore || !provideScore.callback) {
       return 0;
     }
     return provideScore.callback();
   },
   switchSnapShotFlag: function () {
-    if (
-      !provideCurrentFrameData ||
-      !provideCurrentFrameData.callback ||
-      provideCurrentFrameData.callback() == ""
-    ) {
+    if (!provideCurrentFrameData || !provideCurrentFrameData.callback) {
       return 0;
     }
     return provideCurrentFrameData.callback();
@@ -374,13 +366,13 @@ module.exports = window["celerSDK"] = {
     return (onPause = { callback: callback });
   },
   triggerOnResumeInGame: function () {
-    if (!onResume || !onResume.callback || onResume.callback() == "") {
+    if (!onResume || !onResume.callback) {
       return 0;
     }
     return onResume.callback();
   },
   triggerOnPauseInGame: function () {
-    if (!onPause || !onPause.callback || onPause.callback() == "") {
+    if (!onPause || !onPause.callback) {
       return 0;
     }
     return onPause.callback();
